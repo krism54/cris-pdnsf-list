@@ -1,0 +1,618 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1040{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang16\par
+root@OpenWrt:~# nslookup google.com\par
+Server:         127.0.0.1\par
+Address:        127.0.0.1#53\par
+\par
+Name:      google.com\par
+Address 1: 216.58.204.238\par
+Address 2: 2a00:1450:4002:411::200e\par
+root@OpenWrt:~# ip route show\par
+default via 192.168.1.1 dev wlan0  src 192.168.1.39\par
+192.168.1.0/24 dev wlan0 scope link  src 192.168.1.39\par
+192.168.11.0/24 dev br-lan scope link  src 192.168.11.100\par
+root@OpenWrt:~# uci show network\par
+network.loopback=interface\par
+network.loopback.ifname='lo'\par
+network.loopback.proto='static'\par
+network.loopback.ipaddr='127.0.0.1'\par
+network.loopback.netmask='255.0.0.0'\par
+network.globals=globals\par
+network.lan=interface\par
+network.lan.type='bridge'\par
+network.lan.ifname='eth0.1'\par
+network.lan.proto='static'\par
+network.lan.netmask='255.255.255.0'\par
+network.lan.ip6assign='0'\par
+network.lan.ipv6='0'\par
+network.lan.ipaddr='192.168.11.100'\par
+network.lan.dns='9.9.9.9 1.0.0.2'\par
+network.wan=interface\par
+network.wan.proto='dhcp'\par
+network.wan.ipv6='0'\par
+network.@switch[0]=switch\par
+network.@switch[0].name='switch0'\par
+network.@switch[0].reset='1'\par
+network.@switch[0].enable_vlan='1'\par
+network.@switch_vlan[0]=switch_vlan\par
+network.@switch_vlan[0].device='switch0'\par
+network.@switch_vlan[0].vlan='1'\par
+network.@switch_vlan[0].ports='1 2 3 4 0t'\par
+root@OpenWrt:~# uci show firewall\par
+firewall.@defaults[0]=defaults\par
+firewall.@defaults[0].syn_flood='1'\par
+firewall.@defaults[0].input='ACCEPT'\par
+firewall.@defaults[0].output='ACCEPT'\par
+firewall.@defaults[0].forward='REJECT'\par
+firewall.@zone[0]=zone\par
+firewall.@zone[0].name='lan'\par
+firewall.@zone[0].input='ACCEPT'\par
+firewall.@zone[0].output='ACCEPT'\par
+firewall.@zone[0].network='lan'\par
+firewall.@zone[0].forward='REJECT'\par
+firewall.@rule[0]=rule\par
+firewall.@rule[0].name='Allow-DHCP-Renew'\par
+firewall.@rule[0].src='wan'\par
+firewall.@rule[0].proto='udp'\par
+firewall.@rule[0].dest_port='68'\par
+firewall.@rule[0].target='ACCEPT'\par
+firewall.@rule[0].family='ipv4'\par
+firewall.@rule[1]=rule\par
+firewall.@rule[1].name='Allow-Ping'\par
+firewall.@rule[1].src='wan'\par
+firewall.@rule[1].proto='icmp'\par
+firewall.@rule[1].icmp_type='echo-request'\par
+firewall.@rule[1].family='ipv4'\par
+firewall.@rule[1].target='ACCEPT'\par
+firewall.@rule[2]=rule\par
+firewall.@rule[2].name='Allow-IGMP'\par
+firewall.@rule[2].src='wan'\par
+firewall.@rule[2].proto='igmp'\par
+firewall.@rule[2].family='ipv4'\par
+firewall.@rule[2].target='ACCEPT'\par
+firewall.@rule[3]=rule\par
+firewall.@rule[3].name='Allow-MLD'\par
+firewall.@rule[3].src='wan'\par
+firewall.@rule[3].proto='icmp'\par
+firewall.@rule[3].src_ip='fe80::/10'\par
+firewall.@rule[3].icmp_type='130/0' '131/0' '132/0' '143/0'\par
+firewall.@rule[3].family='ipv6'\par
+firewall.@rule[3].target='ACCEPT'\par
+firewall.@rule[4]=rule\par
+firewall.@rule[4].name='Allow-ICMPv6-Forward'\par
+firewall.@rule[4].src='wan'\par
+firewall.@rule[4].dest='*'\par
+firewall.@rule[4].proto='icmp'\par
+firewall.@rule[4].icmp_type='echo-request' 'echo-reply' 'destination-unreachable' 'packet-too-big' 'time-exceeded' 'bad-header' 'unknown-header-type'\par
+firewall.@rule[4].limit='1000/sec'\par
+firewall.@rule[4].family='ipv6'\par
+firewall.@rule[4].target='ACCEPT'\par
+firewall.@rule[5]=rule\par
+firewall.@rule[5].name='Allow-ISAKMP'\par
+firewall.@rule[5].src='wan'\par
+firewall.@rule[5].dest='lan'\par
+firewall.@rule[5].dest_port='500'\par
+firewall.@rule[5].proto='udp'\par
+firewall.@rule[5].target='ACCEPT'\par
+firewall.@include[0]=include\par
+firewall.@include[0].path='/etc/firewall.user'\par
+firewall.@rule[6]=rule\par
+firewall.@rule[6].src='lan'\par
+firewall.@rule[6].dest_port='53'\par
+firewall.@rule[6].proto='tcp udp'\par
+firewall.@rule[6].target='ACCEPT'\par
+firewall.@rule[7]=rule\par
+firewall.@rule[7].src='lan'\par
+firewall.@rule[7].dest_port='67-68'\par
+firewall.@rule[7].proto='udp'\par
+firewall.@rule[7].target='ACCEPT'\par
+firewall.@rule[8]=rule\par
+firewall.@rule[8].src='lan'\par
+firewall.@rule[8].dest_port='53'\par
+firewall.@rule[8].proto='tcp udp'\par
+firewall.@rule[8].target='ACCEPT'\par
+firewall.@zone[1]=zone\par
+firewall.@zone[1].forward='REJECT'\par
+firewall.@zone[1].output='ACCEPT'\par
+firewall.@zone[1].name='wan'\par
+firewall.@zone[1].input='REJECT'\par
+firewall.@zone[1].mtu_fix='1'\par
+firewall.@zone[1].network='wan'\par
+firewall.@zone[1].masq='1'\par
+firewall.@forwarding[0]=forwarding\par
+firewall.@forwarding[0].dest='wan'\par
+firewall.@forwarding[0].src='lan'\par
+firewall.@rule[9]=rule\par
+firewall.@rule[9].name='Block-IPv6'\par
+firewall.@rule[9].src='*'\par
+firewall.@rule[9].proto='ipv6'\par
+firewall.@rule[9].target='DROP'\par
+root@OpenWrt:~# iptables -L -v\par
+Chain INPUT (policy ACCEPT 0 packets, 0 bytes)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+  572 46877 ACCEPT     all  --  lo     any     anywhere             anywhere             /* !fw3 */\par
+ 1142  113K input_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom input rule chain */\par
+ 1030 99220 ACCEPT     all  --  any    any     anywhere             anywhere             ctstate RELATED,ESTABLISHED /* !fw3 */\par
+    7   380 syn_flood  tcp  --  any    any     anywhere             anywhere             tcp flags:FIN,SYN,RST,ACK/SYN /* !fw3 */\par
+    0     0 DROP       ipv6 --  any    any     anywhere             anywhere             /* !fw3: Block-IPv6 */\par
+   24  2365 zone_lan_input  all  --  br-lan any     anywhere             anywhere             /* !fw3 */\par
+   88 11846 zone_wan_input  all  --  wlan0  any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain FORWARD (policy DROP 0 packets, 0 bytes)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+ 2419  957K forwarding_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom forwarding rule chain */\par
+ 2346  953K ACCEPT     all  --  any    any     anywhere             anywhere             ctstate RELATED,ESTABLISHED /* !fw3 */\par
+   73  4000 zone_lan_forward  all  --  br-lan any     anywhere             anywhere             /* !fw3 */\par
+    0     0 zone_wan_forward  all  --  wlan0  any     anywhere             anywhere             /* !fw3 */\par
+    0     0 reject     all  --  any    any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain OUTPUT (policy ACCEPT 0 packets, 0 bytes)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+  572 46877 ACCEPT     all  --  any    lo      anywhere             anywhere             /* !fw3 */\par
+ 1159  267K output_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom output rule chain */\par
+ 1084  261K ACCEPT     all  --  any    any     anywhere             anywhere             ctstate RELATED,ESTABLISHED /* !fw3 */\par
+    4  1044 zone_lan_output  all  --  any    br-lan  anywhere             anywhere             /* !fw3 */\par
+   71  5034 zone_wan_output  all  --  any    wlan0   anywhere             anywhere             /* !fw3 */\par
+\par
+Chain forwarding_lan_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain forwarding_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain forwarding_wan_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain input_lan_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain input_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain input_wan_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain output_lan_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain output_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain output_wan_rule (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+\par
+Chain reject (4 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    0     0 REJECT     tcp  --  any    any     anywhere             anywhere             /* !fw3 */ reject-with tcp-reset\par
+   86 11782 REJECT     all  --  any    any     anywhere             anywhere             /* !fw3 */ reject-with icmp-port-unreachable\par
+\par
+Chain syn_flood (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    7   380 RETURN     tcp  --  any    any     anywhere             anywhere             tcp flags:FIN,SYN,RST,ACK/SYN limit: avg 25/sec burst 50 /* !fw3 */\par
+    0     0 DROP       all  --  any    any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_lan_dest_ACCEPT (2 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    4  1044 ACCEPT     all  --  any    br-lan  anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_lan_dest_REJECT (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    0     0 reject     all  --  any    br-lan  anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_lan_forward (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+   73  4000 forwarding_lan_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom lan forwarding rule chain */\par
+   73  4000 zone_wan_dest_ACCEPT  all  --  any    any     anywhere             anywhere             /* !fw3: Zone lan to wan forwarding policy */\par
+    0     0 ACCEPT     all  --  any    any     anywhere             anywhere             ctstate DNAT /* !fw3: Accept port forwards */\par
+    0     0 zone_lan_dest_REJECT  all  --  any    any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_lan_input (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+   24  2365 input_lan_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom lan input rule chain */\par
+    0     0 ACCEPT     tcp  --  any    any     anywhere             anywhere             tcp dpt:domain /* !fw3: @rule[6] */\par
+   12   821 ACCEPT     udp  --  any    any     anywhere             anywhere             udp dpt:domain /* !fw3: @rule[6] */\par
+    3   972 ACCEPT     udp  --  any    any     anywhere             anywhere             udp dpts:bootps:bootpc /* !fw3: @rule[7] */\par
+    0     0 ACCEPT     tcp  --  any    any     anywhere             anywhere             tcp dpt:domain /* !fw3: @rule[8] */\par
+    0     0 ACCEPT     udp  --  any    any     anywhere             anywhere             udp dpt:domain /* !fw3: @rule[8] */\par
+    0     0 ACCEPT     all  --  any    any     anywhere             anywhere             ctstate DNAT /* !fw3: Accept port redirections */\par
+    9   572 zone_lan_src_ACCEPT  all  --  any    any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_lan_output (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    4  1044 output_lan_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom lan output rule chain */\par
+    4  1044 zone_lan_dest_ACCEPT  all  --  any    any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_lan_src_ACCEPT (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    9   572 ACCEPT     all  --  br-lan any     anywhere             anywhere             ctstate NEW,UNTRACKED /* !fw3 */\par
+\par
+Chain zone_wan_dest_ACCEPT (2 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    0     0 DROP       all  --  any    wlan0   anywhere             anywhere             ctstate INVALID /* !fw3: Prevent NAT leakage */\par
+  144  9034 ACCEPT     all  --  any    wlan0   anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_wan_dest_REJECT (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    0     0 reject     all  --  any    wlan0   anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_wan_forward (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+    0     0 forwarding_wan_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom wan forwarding rule chain */\par
+    0     0 zone_lan_dest_ACCEPT  udp  --  any    any     anywhere             anywhere             udp dpt:isakmp /* !fw3: Allow-ISAKMP */\par
+    0     0 ACCEPT     all  --  any    any     anywhere             anywhere             ctstate DNAT /* !fw3: Accept port forwards */\par
+    0     0 zone_wan_dest_REJECT  all  --  any    any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_wan_input (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+   88 11846 input_wan_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom wan input rule chain */\par
+    0     0 ACCEPT     udp  --  any    any     anywhere             anywhere             udp dpt:bootpc /* !fw3: Allow-DHCP-Renew */\par
+    0     0 ACCEPT     icmp --  any    any     anywhere             anywhere             icmp echo-request /* !fw3: Allow-Ping */\par
+    2    64 ACCEPT     igmp --  any    any     anywhere             anywhere             /* !fw3: Allow-IGMP */\par
+    0     0 ACCEPT     all  --  any    any     anywhere             anywhere             ctstate DNAT /* !fw3: Accept port redirections */\par
+   86 11782 zone_wan_src_REJECT  all  --  any    any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_wan_output (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+   71  5034 output_wan_rule  all  --  any    any     anywhere             anywhere             /* !fw3: Custom wan output rule chain */\par
+   71  5034 zone_wan_dest_ACCEPT  all  --  any    any     anywhere             anywhere             /* !fw3 */\par
+\par
+Chain zone_wan_src_REJECT (1 references)\par
+ pkts bytes target     prot opt in     out     source               destination\par
+   86 11782 reject     all  --  wlan0  any     anywhere             anywhere             /* !fw3 */\par
+root@OpenWrt:~# uci show wireless\par
+wireless.radio0=wifi-device\par
+wireless.radio0.type='mac80211'\par
+wireless.radio0.hwmode='11g'\par
+wireless.radio0.path='platform/qca953x_wmac'\par
+wireless.radio0.htmode='HT20'\par
+wireless.radio0.legacy_rates='1'\par
+wireless.radio0.channel='auto'\par
+wireless.radio0.country='IT'\par
+wireless.radio0.__toggle='Enable'\par
+wireless.default_radio0=wifi-iface\par
+wireless.default_radio0.device='radio0'\par
+wireless.default_radio0.network='lan'\par
+wireless.default_radio0.mode='ap'\par
+wireless.default_radio0.ssid='kDSL'\par
+wireless.default_radio0.encryption='psk2'\par
+wireless.default_radio0.key='xxxxxxx'\par
+wireless.default_radio0.macaddr='00:04:56:00:00:00'\par
+wireless.@wifi-iface[1]=wifi-iface\par
+wireless.@wifi-iface[1].device='radio0'\par
+wireless.@wifi-iface[1].mode='sta'\par
+wireless.@wifi-iface[1].ssid='lynksys'\par
+wireless.@wifi-iface[1].encryption='psk2'\par
+wireless.@wifi-iface[1].key='yyyyyyyy'\par
+wireless.@wifi-iface[1].hidden='1'\par
+wireless.@wifi-iface[1].network='wan'\par
+root@OpenWrt:~# iw dev wlan0 link\par
+Connected to 1c:3b:f3:b6:1e:a6 (on wlan0)\par
+        SSID: lynksys\par
+        freq: 2427\par
+        RX: 1546070 bytes (6449 packets)\par
+        TX: 230116 bytes (1241 packets)\par
+        signal: -53 dBm\par
+        tx bitrate: 240.0 MBit/s MCS 13 40MHz short GI\par
+\par
+        bss flags:      short-preamble short-slot-time\par
+        dtim period:    1\par
+        beacon int:     100\par
+root@OpenWrt:~# opkg list-installed | grep upnp\par
+root@OpenWrt:~# ping -c 4 <IP_WAN>\par
+-ash: syntax error: unexpected newline\par
+root@OpenWrt:~# nmap -Pn <IP_WAN>\par
+-ash: syntax error: unexpected newline\par
+root@OpenWrt:~# logread\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.000000] Linux version 4.9.243 (buildbot@d6b0edf6d597) (gcc version 7.3.0 (OpenWrt GCC 7.3.0 r8077-7cbbab7246) ) #0 Wed Nov 11 20:09:58 2020\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.000000] MyLoader: sysp=8f0b2f0f, boardp=0f0f0f0f, parts=2f1f172f\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] bootconsole [early0] enabled\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] CPU0 revision is: 00019374 (MIPS 24Kc)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] SoC: Qualcomm Atheros QCA9533 ver 1 rev 1\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Determined physical RAM map:\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000]  memory: 02000000 @ 00000000 (usable)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Initrd not found or empty - disabling initrd\par
+Sun Apr 27 09:44:03 2025 kern.warn kernel: [    0.000000] Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.\par
+Sun Apr 27 09:44:03 2025 kern.warn kernel: [    0.000000] Primary data cache 32kB, 4-way, VIPT, cache aliases, linesize 32 bytes\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Zone ranges:\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000]   Normal   [mem 0x0000000000000000-0x0000000001ffffff]\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Movable zone start for each node\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Early memory node ranges\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000]   node   0: [mem 0x0000000000000000-0x0000000001ffffff]\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x0000000001ffffff]\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.000000] On node 0 totalpages: 8192\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.000000] free_area_init_node: node 0, pgdat 80446a44, node_mem_map 81000020\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.000000]   Normal zone: 64 pages used for memmap\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.000000]   Normal zone: 0 pages reserved\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.000000]   Normal zone: 8192 pages, LIFO batch:0\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.000000] pcpu-alloc: s0 r0 d32768 u32768 alloc=1*32768\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.000000] pcpu-alloc: [0] 0\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 8128\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.000000] Kernel command line:  board=TL-WR841N-v9  console=ttyS0,115200 rootfstype=squashfs noinitrd\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] PID hash table entries: 128 (order: -3, 512 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Writing ErrCtl register=00000000\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Readback ErrCtl register=00000000\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Memory: 27604K/32768K available (3412K kernel code, 163K rwdata, 424K rodata, 216K init, 211K bss, 5164K reserved, 0K cma-reserved)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] NR_IRQS:51\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] Clocks: CPU:550.000MHz, DDR:398.364MHz, AHB:199.182MHz, Ref:25.000MHz\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000000] clocksource: MIPS: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 6950037990 ns\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.000010] sched_clock: 32 bits at 275MHz, resolution 3ns, wraps every 7809031678ns\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.008287] Calibrating delay loop... 366.18 BogoMIPS (lpj=1830912)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.071081] pid_max: default: 32768 minimum: 301\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.076076] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.083061] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.093722] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.104139] futex hash table entries: 256 (order: -1, 3072 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.112088] NET: Registered protocol family 16\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.118555] MIPS: machine is TP-LINK TL-WR841N/ND v9\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.614543] clocksource: Switched to clocksource MIPS\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.621156] NET: Registered protocol family 2\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.626869] TCP established hash table entries: 1024 (order: 0, 4096 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.634230] TCP bind hash table entries: 1024 (order: 0, 4096 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.641002] TCP: Hash tables configured (established 1024 bind 1024)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.647840] UDP hash table entries: 256 (order: 0, 4096 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.654017] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.660969] NET: Registered protocol family 1\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    0.665640] PCI: CLS 0 bytes, default 32\par
+Sun Apr 27 09:44:03 2025 kern.warn kernel: [    0.669982] Crashlog allocated RAM at address 0x1f00000\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.677000] workingset: timestamp_bits=30 max_order=13 bucket_order=0\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.691705] squashfs: version 4.0 (2009/01/31) Phillip Lougher\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.697899] jffs2: version 2.2 (NAND) (SUMMARY) (LZMA) (RTIME) (CMODE_PRIORITY) (c) 2001-2006 Red Hat, Inc.\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.719550] io scheduler noop registered\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.723693] io scheduler deadline registered (default)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.729659] Serial: 8250/16550 driver, 16 ports, IRQ sharing enabled\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.739459] console [ttyS0] disabled\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.763412] serial8250.0: ttyS0 at MMIO 0x18020000 (irq = 11, base_baud = 1562500) is a 16550A\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.772529] console [ttyS0] enabled\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.780085] bootconsole [early0] disabled\par
+Sun Apr 27 09:44:03 2025 kern.warn kernel: [    0.796230] m25p80 spi0.0: found w25q32, expected m25p80\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.812912] m25p80 spi0.0: w25q32 (4096 Kbytes)\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.818001] 5 tp-link partitions found on MTD device spi0.0\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.823761] Creating 5 MTD partitions on "spi0.0":\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.828757] 0x000000000000-0x000000020000 : "u-boot"\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.836274] 0x000000020000-0x00000016dde0 : "kernel"\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.843799] 0x00000016dde0-0x0000003f0000 : "rootfs"\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.850906] mtd: device 2 (rootfs) set to be root filesystem\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.856874] 1 squashfs-split partitions found on MTD device rootfs\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.863271] 0x0000003a0000-0x0000003f0000 : "rootfs_data"\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.871441] 0x0000003f0000-0x000000400000 : "art"\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    0.878838] 0x000000020000-0x0000003f0000 : "firmware"\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.887841] libphy: Fixed MDIO Bus: probed\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    0.918374] libphy: ag71xx_mdio: probed\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    1.547112] ag71xx-mdio.1: Found an AR934X built-in switch\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    1.600555] eth0: Atheros AG71xx at 0xba000000, irq 5, mode:GMII\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.237509] ag71xx ag71xx.0: connected to PHY at ag71xx-mdio.1:04 [uid=004dd042, driver=Generic PHY]\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.247796] eth1: Atheros AG71xx at 0xb9000000, irq 4, mode:MII\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.256504] NET: Registered protocol family 10\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.266530] NET: Registered protocol family 17\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.271188] bridge: filtering via arp/ip/ip6tables is no longer available by default. Update your scripts to load br_netfilter if you need this.\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.284751] 8021q: 802.1Q VLAN Support v1.8\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.291193] hctosys: unable to open rtc device (rtc0)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.301782] VFS: Mounted root (squashfs filesystem) readonly on device 31:2.\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    2.310646] Freeing unused kernel memory: 216K\par
+Sun Apr 27 09:44:03 2025 kern.warn kernel: [    2.315280] This architecture does not have kernel memory protection.\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    2.544595] random: fast init done\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    3.045463] init: Console is alive\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    3.049244] init: - watchdog -\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    3.967443] kmodloader: loading kernel modules from /etc/modules-boot.d/*\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    4.027441] kmodloader: done loading kernel modules from /etc/modules-boot.d/*\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    4.045885] init: - preinit -\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    4.832949] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    4.864396] random: procd: uninitialized urandom read (4 bytes read)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    6.467022] eth0: link up (1000Mbps/Full duplex)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    6.471843] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    8.154711] jffs2: notice: (400) jffs2_build_xattr_subsystem: complete building xattr subsystem, 0 of xdatum (0 unchecked, 0 orphan) and 0 of xref (0 dead, 0 orphan) found.\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    8.172914] mount_root: switching to jffs2 overlay\par
+Sun Apr 27 09:44:03 2025 user.warn kernel: [    8.209763] urandom-seed: Seeding with /etc/urandom.seed\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    8.417826] eth0: link down\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    8.435815] procd: - early -\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    8.438916] procd: - watchdog -\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    9.080803] procd: - watchdog -\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    9.084377] procd: - ubus -\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    9.197695] random: ubusd: uninitialized urandom read (4 bytes read)\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    9.206674] random: ubusd: uninitialized urandom read (4 bytes read)\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [    9.213815] random: ubusd: uninitialized urandom read (4 bytes read)\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    9.221707] procd: - init -\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    9.644310] kmodloader: loading kernel modules from /etc/modules.d/*\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    9.655915] ip6_tables: (C) 2000-2006 Netfilter Core Team\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    9.674077] Loading modules backported from Linux version wt-2017-11-01-0-gfe248fc2c180\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    9.682428] Backport generated by backports.git v4.14-rc2-1-31-g86cf0e5d\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    9.692726] ip_tables: (C) 2000-2006 Netfilter Core Team\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    9.707862] nf_conntrack version 0.5.0 (1024 buckets, 4096 max)\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    9.775204] xt_time: kernel timezone is -0000\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    9.877948] ath: EEPROM regdomain: 0x0\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    9.877960] ath: EEPROM indicates default country code should be used\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    9.877963] ath: doing EEPROM country->regdmn map search\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    9.877982] ath: country maps to regdmn code: 0x3a\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    9.877988] ath: Country alpha2 being used: US\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    9.877992] ath: Regpair used: 0x3a\par
+Sun Apr 27 09:44:03 2025 kern.debug kernel: [    9.889905] ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'\par
+Sun Apr 27 09:44:03 2025 kern.info kernel: [    9.895083] ieee80211 phy0: Atheros AR9531 Rev:1 mem=0xb8100000, irq=47\par
+Sun Apr 27 09:44:03 2025 user.info kernel: [    9.935094] kmodloader: done loading kernel modules from /etc/modules.d/*\par
+Sun Apr 27 09:44:03 2025 kern.warn kernel: [   11.197738] urandom_read: 5 callbacks suppressed\par
+Sun Apr 27 09:44:03 2025 kern.notice kernel: [   11.197748] random: jshn: uninitialized urandom read (4 bytes read)\par
+Sun Apr 27 09:44:04 2025 user.notice dnsmasq: DNS rebinding protection is active, will discard upstream RFC1918 responses!\par
+Sun Apr 27 09:44:04 2025 user.notice dnsmasq: Allowing 127.0.0.0/8 responses\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: started, version 2.80 cachesize 150\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: DNS service limited to local subnets\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: compile time options: IPv6 GNU-getopt no-DBus no-i18n no-IDN DHCP no-DHCPv6 no-Lua TFTP no-conntrack no-ipset no-auth no-DNSSEC no-ID loop-detect inotify dumpfile\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: using local addresses only for domain test\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: using local addresses only for domain onion\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: using local addresses only for domain localhost\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: using local addresses only for domain local\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: using local addresses only for domain invalid\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: using local addresses only for domain bind\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: using local addresses only for domain lan\par
+Sun Apr 27 09:44:05 2025 daemon.warn dnsmasq[719]: no servers found in /tmp/resolv.conf.auto, will retry\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: read /etc/hosts - 4 addresses\par
+Sun Apr 27 09:44:05 2025 daemon.info dnsmasq[719]: read /tmp/hosts/dhcp.cfg01411c - 0 addresses\par
+Sun Apr 27 09:44:05 2025 authpriv.info dropbear[746]: Not backgrounding\par
+Sun Apr 27 09:44:07 2025 user.notice : Added device handler type: tunnel\par
+Sun Apr 27 09:44:07 2025 user.notice : Added device handler type: Network device\par
+Sun Apr 27 09:44:07 2025 user.notice : Added device handler type: bridge\par
+Sun Apr 27 09:44:07 2025 user.notice : Added device handler type: veth\par
+Sun Apr 27 09:44:07 2025 user.notice : Added device handler type: macvlan\par
+Sun Apr 27 09:44:07 2025 user.notice : Added device handler type: 8021ad\par
+Sun Apr 27 09:44:07 2025 user.notice : Added device handler type: 8021q\par
+Sun Apr 27 09:44:09 2025 user.notice ucitrack: Setting up /etc/config/network reload dependency on /etc/config/dhcp\par
+Sun Apr 27 09:44:09 2025 user.notice ucitrack: Setting up /etc/config/network reload dependency on /etc/config/radvd\par
+Sun Apr 27 09:44:09 2025 user.notice ucitrack: Setting up /etc/config/wireless reload dependency on /etc/config/network\par
+Sun Apr 27 09:44:10 2025 user.notice ucitrack: Setting up /etc/config/firewall reload dependency on /etc/config/luci-splash\par
+Sun Apr 27 09:44:10 2025 user.notice ucitrack: Setting up /etc/config/firewall reload dependency on /etc/config/qos\par
+Sun Apr 27 09:44:10 2025 user.notice ucitrack: Setting up /etc/config/firewall reload dependency on /etc/config/miniupnpd\par
+Sun Apr 27 09:44:10 2025 user.notice ucitrack: Setting up /etc/config/dhcp reload dependency on /etc/config/odhcpd\par
+Sun Apr 27 09:44:10 2025 user.notice ucitrack: Setting up non-init /etc/config/fstab reload handler: /sbin/block mount\par
+Sun Apr 27 09:44:11 2025 user.notice ucitrack: Setting up /etc/config/system reload trigger for non-procd /etc/init.d/led\par
+Sun Apr 27 09:44:11 2025 user.notice ucitrack: Setting up /etc/config/system reload dependency on /etc/config/luci_statistics\par
+Sun Apr 27 09:44:11 2025 user.notice ucitrack: Setting up /etc/config/system reload dependency on /etc/config/dhcp\par
+Sun Apr 27 09:44:12 2025 kern.info kernel: [   20.696253] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready\par
+Sun Apr 27 09:44:12 2025 kern.info kernel: [   20.729698] br-lan: port 1(eth0.1) entered blocking state\par
+Sun Apr 27 09:44:12 2025 kern.info kernel: [   20.735366] br-lan: port 1(eth0.1) entered disabled state\par
+Sun Apr 27 09:44:12 2025 kern.info kernel: [   20.741399] device eth0.1 entered promiscuous mode\par
+Sun Apr 27 09:44:12 2025 kern.info kernel: [   20.746418] device eth0 entered promiscuous mode\par
+Sun Apr 27 09:44:12 2025 daemon.notice netifd: Interface 'lan' is enabled\par
+Sun Apr 27 09:44:12 2025 daemon.notice netifd: Interface 'lan' is setting up now\par
+Sun Apr 27 09:44:12 2025 daemon.notice netifd: Interface 'lan' is now up\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: reading /tmp/resolv.conf.auto\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using local addresses only for domain test\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using local addresses only for domain onion\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using local addresses only for domain localhost\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using local addresses only for domain local\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using local addresses only for domain invalid\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using local addresses only for domain bind\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using local addresses only for domain lan\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using nameserver 9.9.9.9#53\par
+Sun Apr 27 09:44:12 2025 daemon.info dnsmasq[719]: using nameserver 1.0.0.2#53\par
+Sun Apr 27 09:44:12 2025 daemon.notice netifd: Interface 'loopback' is enabled\par
+Sun Apr 27 09:44:12 2025 daemon.notice netifd: Interface 'loopback' is setting up now\par
+Sun Apr 27 09:44:12 2025 daemon.notice netifd: Interface 'loopback' is now up\par
+Sun Apr 27 09:44:12 2025 daemon.notice netifd: Network device 'lo' link is up\par
+Sun Apr 27 09:44:12 2025 daemon.notice netifd: Interface 'loopback' has link connectivity\par
+Sun Apr 27 09:44:12 2025 daemon.notice procd: /etc/rc.d/S96led: setting up led WAN\par
+Sun Apr 27 09:44:13 2025 daemon.notice procd: /etc/rc.d/S96led: setting up led LAN1\par
+Sun Apr 27 09:44:13 2025 daemon.notice procd: /etc/rc.d/S96led: setting up led LAN2\par
+Sun Apr 27 09:44:13 2025 daemon.notice procd: /etc/rc.d/S96led: setting up led LAN3\par
+Sun Apr 27 09:44:13 2025 daemon.notice procd: /etc/rc.d/S96led: setting up led LAN4\par
+Sun Apr 27 09:44:13 2025 daemon.notice procd: /etc/rc.d/S96led: setting up led WLAN\par
+Sun Apr 27 09:44:13 2025 user.notice firewall: Reloading firewall due to ifup of lan (br-lan)\par
+Sun Apr 27 09:44:13 2025 kern.info kernel: [   22.347543] eth0: link up (1000Mbps/Full duplex)\par
+Sun Apr 27 09:44:13 2025 kern.info kernel: [   22.352363] IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready\par
+Sun Apr 27 09:44:13 2025 daemon.notice netifd: Network device 'eth0' link is up\par
+Sun Apr 27 09:44:14 2025 daemon.notice netifd: VLAN 'eth0.1' link is up\par
+Sun Apr 27 09:44:14 2025 kern.info kernel: [   22.479136] br-lan: port 1(eth0.1) entered blocking state\par
+Sun Apr 27 09:44:14 2025 kern.info kernel: [   22.484797] br-lan: port 1(eth0.1) entered forwarding state\par
+Sun Apr 27 09:44:14 2025 daemon.notice netifd: bridge 'br-lan' link is up\par
+Sun Apr 27 09:44:14 2025 daemon.notice netifd: Interface 'lan' has link connectivity\par
+Sun Apr 27 09:44:14 2025 kern.debug kernel: [   22.824829] ath: EEPROM regdomain: 0x817c\par
+Sun Apr 27 09:44:14 2025 kern.debug kernel: [   22.824841] ath: EEPROM indicates we should expect a country code\par
+Sun Apr 27 09:44:14 2025 kern.debug kernel: [   22.824847] ath: doing EEPROM country->regdmn map search\par
+Sun Apr 27 09:44:14 2025 kern.debug kernel: [   22.824852] ath: country maps to regdmn code: 0x37\par
+Sun Apr 27 09:44:14 2025 kern.debug kernel: [   22.824859] ath: Country alpha2 being used: IT\par
+Sun Apr 27 09:44:14 2025 kern.debug kernel: [   22.824863] ath: Regpair used: 0x37\par
+Sun Apr 27 09:44:14 2025 kern.debug kernel: [   22.824870] ath: regdomain 0x817c dynamically updated by user\par
+Sun Apr 27 09:44:15 2025 daemon.info procd: - init complete -\par
+Sun Apr 27 09:44:15 2025 user.notice mac80211: Failed command: iw phy phy0 set antenna all all\par
+Sun Apr 27 09:44:16 2025 daemon.err hostapd: Configuration file: /var/run/hostapd-phy0.conf\par
+Sun Apr 27 09:44:16 2025 kern.info kernel: [   25.134255] IPv6: ADDRCONF(NETDEV_UP): wlan0-1: link is not ready\par
+Sun Apr 27 09:44:16 2025 kern.info kernel: [   25.145549] br-lan: port 2(wlan0-1) entered blocking state\par
+Sun Apr 27 09:44:16 2025 kern.info kernel: [   25.151235] br-lan: port 2(wlan0-1) entered disabled state\par
+Sun Apr 27 09:44:16 2025 kern.info kernel: [   25.157447] device wlan0-1 entered promiscuous mode\par
+Sun Apr 27 09:44:16 2025 daemon.notice hostapd: wlan0-1: interface state UNINITIALIZED->COUNTRY_UPDATE\par
+Sun Apr 27 09:44:16 2025 daemon.notice hostapd: ACS: Automatic channel selection started, this may take a bit\par
+Sun Apr 27 09:44:16 2025 daemon.notice hostapd: wlan0-1: interface state COUNTRY_UPDATE->ACS\par
+Sun Apr 27 09:44:16 2025 daemon.notice hostapd: wlan0-1: ACS-STARTED\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[719]: exiting on receipt of SIGTERM\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: started, version 2.80 cachesize 150\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: DNS service limited to local subnets\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: compile time options: IPv6 GNU-getopt no-DBus no-i18n no-IDN DHCP no-DHCPv6 no-Lua TFTP no-conntrack no-ipset no-auth no-DNSSEC no-ID loop-detect inotify dumpfile\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq-dhcp[1316]: DHCP, IP range 192.168.11.100 -- 192.168.11.249, lease time 12h\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain test\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain onion\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain localhost\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain local\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain invalid\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain bind\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain lan\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: reading /tmp/resolv.conf.auto\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain test\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain onion\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain localhost\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain local\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain invalid\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain bind\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using local addresses only for domain lan\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using nameserver 9.9.9.9#53\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: using nameserver 1.0.0.2#53\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: read /etc/hosts - 4 addresses\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: read /tmp/hosts/dhcp.cfg01411c - 1 addresses\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq-dhcp[1316]: read /etc/ethers - 0 addresses\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: read /etc/hosts - 4 addresses\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq[1316]: read /tmp/hosts/dhcp.cfg01411c - 1 addresses\par
+Sun Apr 27 09:44:19 2025 daemon.info dnsmasq-dhcp[1316]: read /etc/ethers - 0 addresses\par
+Sun Apr 27 09:44:22 2025 daemon.info dnsmasq[1316]: read /etc/hosts - 4 addresses\par
+Sun Apr 27 09:44:22 2025 daemon.info dnsmasq[1316]: read /tmp/hosts/dhcp.cfg01411c - 1 addresses\par
+Sun Apr 27 09:44:22 2025 daemon.info dnsmasq-dhcp[1316]: read /etc/ethers - 0 addresses\par
+Sun Apr 27 09:44:25 2025 daemon.notice hostapd: wlan0-1: ACS-COMPLETED freq=2452 channel=9\par
+Sun Apr 27 09:44:25 2025 daemon.err hostapd: Using interface wlan0-1 with hwaddr 00:04:56:00:00:00 and ssid "kDSL"\par
+Sun Apr 27 09:44:25 2025 daemon.notice hostapd: wlan0-1: interface state ACS->ENABLED\par
+Sun Apr 27 09:44:25 2025 daemon.notice hostapd: wlan0-1: AP-ENABLED\par
+Sun Apr 27 09:44:25 2025 kern.info kernel: [   34.163739] IPv6: ADDRCONF(NETDEV_UP): wlan0: link is not ready\par
+Sun Apr 27 09:44:25 2025 daemon.notice netifd: radio0 (999): Successfully initialized wpa_supplicant\par
+Sun Apr 27 09:44:26 2025 daemon.notice netifd: Interface 'wan' is enabled\par
+Sun Apr 27 09:44:27 2025 kern.info kernel: [   35.963367] wlan0: authenticate with 1c:3b:f3:b6:1e:a6\par
+Sun Apr 27 09:44:27 2025 kern.info kernel: [   35.982451] wlan0: send auth to 1c:3b:f3:b6:1e:a6 (try 1/3)\par
+Sun Apr 27 09:44:27 2025 kern.info kernel: [   35.991590] wlan0: authenticated\par
+Sun Apr 27 09:44:27 2025 kern.info kernel: [   36.004657] wlan0: associate with 1c:3b:f3:b6:1e:a6 (try 1/3)\par
+Sun Apr 27 09:44:27 2025 kern.info kernel: [   36.014511] wlan0: RX AssocResp from 1c:3b:f3:b6:1e:a6 (capab=0x431 status=0 aid=13)\par
+Sun Apr 27 09:44:27 2025 kern.info kernel: [   36.022966] wlan0: associated\par
+Sun Apr 27 09:44:27 2025 daemon.notice netifd: Network device 'wlan0' link is up\par
+Sun Apr 27 09:44:27 2025 daemon.notice netifd: Interface 'wan' has link connectivity\par
+Sun Apr 27 09:44:27 2025 daemon.notice netifd: Interface 'wan' is setting up now\par
+Sun Apr 27 09:44:27 2025 daemon.notice netifd: wan (1438): udhcpc: started, v1.28.4\par
+Sun Apr 27 09:44:28 2025 daemon.notice netifd: wan (1438): udhcpc: sending discover\par
+Sun Apr 27 09:44:28 2025 kern.info kernel: [   36.984720] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0-1: link becomes ready\par
+Sun Apr 27 09:44:28 2025 kern.info kernel: [   36.991700] br-lan: port 2(wlan0-1) entered blocking state\par
+Sun Apr 27 09:44:28 2025 kern.info kernel: [   36.997461] br-lan: port 2(wlan0-1) entered forwarding state\par
+Sun Apr 27 09:44:28 2025 daemon.notice netifd: Network device 'wlan0-1' link is up\par
+Sun Apr 27 09:44:30 2025 daemon.notice netifd: wan (1438): udhcpc: sending select for 192.168.1.39\par
+Sun Apr 27 09:44:30 2025 daemon.notice netifd: wan (1438): udhcpc: lease of 192.168.1.39 obtained, lease time 86400\par
+Sun Apr 27 09:44:30 2025 daemon.notice netifd: Interface 'wan' is now up\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: reading /tmp/resolv.conf.auto\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using local addresses only for domain test\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using local addresses only for domain onion\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using local addresses only for domain localhost\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using local addresses only for domain local\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using local addresses only for domain invalid\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using local addresses only for domain bind\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using local addresses only for domain lan\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using nameserver 9.9.9.9#53\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using nameserver 1.0.0.2#53\par
+Sun Apr 27 09:44:30 2025 daemon.info dnsmasq[1316]: using nameserver 192.168.1.1#53\par
+Sun Apr 27 09:44:30 2025 user.notice firewall: Reloading firewall due to ifup of wan (wlan0)\par
+Sun Apr 27 16:34:30 2025 daemon.info hostapd: wlan0-1: STA 78:8a:86:1a:79:a5 IEEE 802.11: authenticated\par
+Sun Apr 27 16:34:30 2025 daemon.info hostapd: wlan0-1: STA 78:8a:86:1a:79:a5 IEEE 802.11: associated (aid 1)\par
+Sun Apr 27 16:34:30 2025 daemon.notice hostapd: wlan0-1: AP-STA-CONNECTED 78:8a:86:1a:79:a5\par
+Sun Apr 27 16:34:30 2025 daemon.info hostapd: wlan0-1: STA 78:8a:86:1a:79:a5 WPA: pairwise key handshake completed (RSN)\par
+Sun Apr 27 16:34:30 2025 daemon.info dnsmasq-dhcp[1316]: DHCPREQUEST(br-lan) 192.168.11.126 78:8a:86:1a:79:a5\par
+Sun Apr 27 16:34:30 2025 daemon.info dnsmasq-dhcp[1316]: DHCPACK(br-lan) 192.168.11.126 78:8a:86:1a:79:a5 miniPC\par
+Sun Apr 27 16:34:32 2025 daemon.notice hostapd: wlan0-1: AP-STA-DISCONNECTED 78:8a:86:1a:79:a5\par
+Sun Apr 27 16:34:32 2025 daemon.info hostapd: wlan0-1: STA 78:8a:86:1a:79:a5 IEEE 802.11: disassociated\par
+Sun Apr 27 16:34:33 2025 daemon.info hostapd: wlan0-1: STA 78:8a:86:1a:79:a5 IEEE 802.11: deauthenticated due to inactivity (timer DEAUTH/REMOVE)\par
+Sun Apr 27 16:34:42 2025 kern.notice kernel: [   61.899171] random: crng init done\par
+Sun Apr 27 16:34:57 2025 daemon.info hostapd: wlan0-1: STA a4:50:46:03:ae:2b IEEE 802.11: authenticated\par
+Sun Apr 27 16:34:57 2025 daemon.info hostapd: wlan0-1: STA a4:50:46:03:ae:2b IEEE 802.11: associated (aid 1)\par
+Sun Apr 27 16:34:57 2025 daemon.notice hostapd: wlan0-1: AP-STA-CONNECTED a4:50:46:03:ae:2b\par
+Sun Apr 27 16:34:57 2025 daemon.info hostapd: wlan0-1: STA a4:50:46:03:ae:2b WPA: pairwise key handshake completed (RSN)\par
+Sun Apr 27 16:35:00 2025 daemon.info dnsmasq-dhcp[1316]: DHCPDISCOVER(br-lan) a4:50:46:03:ae:2b\par
+Sun Apr 27 16:35:00 2025 daemon.info dnsmasq-dhcp[1316]: DHCPOFFER(br-lan) 192.168.11.160 a4:50:46:03:ae:2b\par
+Sun Apr 27 16:35:00 2025 daemon.info dnsmasq-dhcp[1316]: DHCPREQUEST(br-lan) 192.168.11.160 a4:50:46:03:ae:2b\par
+Sun Apr 27 16:35:00 2025 daemon.info dnsmasq-dhcp[1316]: DHCPACK(br-lan) 192.168.11.160 a4:50:46:03:ae:2b\par
+Sun Apr 27 16:35:03 2025 daemon.err uhttpd[866]: luci: accepted login on / for root from 192.168.11.21\par
+Sun Apr 27 16:38:12 2025 authpriv.info dropbear[1764]: Child connection from 192.168.11.21:59454\par
+Sun Apr 27 16:38:14 2025 authpriv.notice dropbear[1764]: Password auth succeeded for 'root' from 192.168.11.21:59454\par
+root@OpenWrt:~# dmesgcr\par
+}
+ 
